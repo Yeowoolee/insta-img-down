@@ -50,5 +50,6 @@ def my_url_list():
 
     reallinknum = len(reallink)
     print("총"+str(reallinknum)+"개의 URL 수집")
+    reallink = list(set(reallink))
     return reallink
 

@@ -32,4 +32,5 @@ def get_img_url():
     
     driver.close()
     print('이미지 주소 수집완료')
+    temp = list(set(temp))
     return temp
