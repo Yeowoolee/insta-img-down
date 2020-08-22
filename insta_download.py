@@ -7,9 +7,9 @@ from time import sleep
 import insta_url
 
 def get_img_url():
-    temp = []
-    myurl = insta_url.my_url_list()
+    temp = {'img' : [], 'video' : []}
     driver = webdriver.Chrome('chromedriver.exe')
+    myurl = insta_url.my_url_list(driver)
     for i in myurl:
         url = 'https://www.instagram.com/'+str(i)
         driver.get(url)
@@ -18,9 +18,19 @@ def get_img_url():
             sleep(1)
             pageString = driver.page_source 
             soup = BeautifulSoup(pageString, "lxml")
-            imgs = soup.select('img')[1]
-            imgs = imgs.attrs['src']
-            temp.append(imgs)
+            try:
+                videos = soup.select('.tWeCl')
+                videos = soup.select('src')
+                print(video)
+                temp['video'] += [videos]
+            except:
+                imgs = soup.select('img')[1]
+                imgs = imgs.attrs['src']
+                if imgs:
+                    temp['img'] += [imgs]
+                else:
+                    imgs = imgs.attrs['srcset']
+                    temp['img'] += [imgs]
             try :
                 driver.find_element_by_class_name("coreSpriteRightChevron").click()
 
@@ -32,5 +42,4 @@ def get_img_url():
     
     driver.close()
     print('이미지 주소 수집완료')
-    temp = list(set(temp))
     return temp
